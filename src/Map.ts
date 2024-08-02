@@ -18,22 +18,29 @@ export class CustomMap {
 				zoom: 2,
 				center: {
 					lat: 40,
-					lng: 10,
-				},
+					lng: 10
+				}
 			}
 		);
 	}
 
 	addMarker(mappable: Mappable) {
-		new google.maps.Marker({
+		const marker = new google.maps.Marker({
 			position: {
 				lat: mappable.location.lat,
-				lng: mappable.location.lng,
+				lng: mappable.location.lng
 			},
 			animation: google.maps.Animation.DROP,
 			map: this.googleMap,
-			title: mappable.name,
 			icon: mappable.icon
+		});
+
+		marker.addListener('click', () => {
+			const infowindow = new google.maps.InfoWindow({
+				content: `<span>${mappable.name}</span>`
+			});
+
+			infowindow.open(this.googleMap , marker);
 		});
 	}
 }
